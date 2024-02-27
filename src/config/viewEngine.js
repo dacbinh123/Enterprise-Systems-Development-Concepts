@@ -1,6 +1,12 @@
-const path = require('path');
-const express = require('express');
-const handlebars = require('express-handlebars');
+const path = require('path')
+const express = require('express')
+const Handlebars = require('handlebars')
+const bodyParser = require('body-parser')
+const session = require("express-session")
+const cookieParser = require('cookie-parser')
+const i18n = require("i18n");
+const handlebars = require('express-handlebars')
+const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access')
 
 const configViewEngine = (app) => {
   // Set view engine
@@ -14,7 +20,12 @@ const configViewEngine = (app) => {
   app.set('views', path.join(__dirname, '../resources/views'));
 
   // Config static file
-  app.use(express.static(path.join(__dirname, '../src/public')));
+  app.use(express.static(path.join('./src', 'public')))
+  app.use(bodyParser.urlencoded({ extended: true }));//body parser
+  app.use(bodyParser.json()); //bodyparser json
+  app.use(cookieParser())
+  app.use(express.urlencoded());
+  app.use(express.json())
 };
 
 module.exports = configViewEngine;
