@@ -4,16 +4,38 @@ const express = require("express");
 const configViewEngine = require("./config/viewEngine");
 
 // Require router
+
+const loginRoute = require("./routes/loginRoute");
+const singUpRoute = require("./routes/signupRoute");
 const indexRoute = require("./routes/indexRoute");
+const logoutRoute = require("./routes/logoutRoute");
 
-const app = express(); // Khởi tạo ứng dụng Express
-const port = process.env.PORT || 3000; // Port mặc định
 
-// Cấu hình template engine
+// Require config
+
+const connectDb = require("./config/dbConnection");
+connectDb();
+
+const app = express(); // app exprexx
+const port = process.env.PORT || 3000; // port
+
+// config template engine
 configViewEngine(app);
 
-// Khai báo route
+
+// Khai bao routee
+app.use("/login", loginRoute);
+app.use("/signup", singUpRoute);
+app.use("/logout", logoutRoute);
+
 app.use("/", indexRoute);
 
-// Khởi động server và lắng nghe cổng
-app.listen(port, () => console.log(`Server đang chạy tại http://localhost:${port}`));
+
+// app.use((req, res) => {
+//   res.status(404);
+//   res.render("error");
+// });
+
+
+// Listen server
+app.listen(port, () => console.log(`http://localhost:${port}`));
